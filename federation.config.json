@@ -1,0 +1,32 @@
+{
+  "$schema": "./schemas/federation-config.schema.json",
+  "name": "BookSmith Federation OS",
+  "slug": "booksmith-federation-os",
+  "phase": "0.1",
+  "role": "federation-desktop-os",
+  "canonRule": {
+    "userInput": "accepted-canon",
+    "aiOutput": "proposed-patch-until-approved"
+  },
+  "repositories": {
+    "os": "AIFreedomTrustFederation/BookSmith-Federation-OS",
+    "publishingEngine": "AIFreedomTrustFederation/booksmith-ai",
+    "forgeInfrastructure": "AIFreedomTrustFederation/AIFT-Forge",
+    "governance": "AIFreedomTrustFederation/AI-Freedom-Trust",
+    "economyProtocol": "AIFreedomTrustFederation/Aether_Coin_biozonecurrency",
+    "publicPortal": "AIFreedomTrustFederation/www.aifreedomtrust.com"
+  },
+  "apps": [
+    "web-os",
+    "marketplace",
+    "node-agent"
+  ],
+  "packages": [
+    "federation-core",
+    "storage-core",
+    "marketplace-core",
+    "wallet-core",
+    "booksmith-bridge",
+    "ui"
+  ]
+}
