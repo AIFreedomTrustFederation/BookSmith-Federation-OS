@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Federation Operating System Architecture Specification</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #070b14;
+      --panel: #101827;
+      --panel-2: #151f33;
+      --text: #edf4ff;
+      --muted: #9fb1ca;
+      --line: rgba(255,255,255,.12);
+      --gold: #f6c756;
+      --blue: #78b7ff;
+      --green: #8af0b5;
+      --red: #ff9b9b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at 20% 0%, rgba(120,183,255,.2), transparent 34%), radial-gradient(circle at 80% 10%, rgba(246,199,86,.14), transparent 30%), var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+    }
+    a { color: var(--blue); }
+    header {
+      padding: 72px 24px 48px;
+      border-bottom: 1px solid var(--line);
+    }
+    .wrap { max-width: 1180px; margin: 0 auto; }
+    .eyebrow { color: var(--gold); text-transform: uppercase; letter-spacing: .18em; font-weight: 700; font-size: .78rem; }
+    h1 { font-size: clamp(2.4rem, 6vw, 5.2rem); line-height: .98; margin: 18px 0; max-width: 1000px; }
+    h2 { font-size: 2rem; margin-top: 64px; border-top: 1px solid var(--line); padding-top: 36px; }
+    h3 { font-size: 1.35rem; margin-top: 34px; color: var(--gold); }
+    h4 { font-size: 1.05rem; margin-bottom: 4px; color: var(--green); }
+    .subtitle { font-size: 1.25rem; color: var(--muted); max-width: 880px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 20px;
+    }
+    .card strong { color: var(--text); }
+    main { padding: 28px 24px 80px; }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+    pre {
+      overflow: auto;
+      background: #050812;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px;
+      color: #d7e7ff;
+    }
+    .callout {
+      border-left: 4px solid var(--gold);
+      background: rgba(246,199,86,.08);
+      padding: 18px 20px;
+      border-radius: 12px;
+      margin: 24px 0;
+    }
+    .danger { border-left-color: var(--red); background: rgba(255,155,155,.08); }
+    .ok { border-left-color: var(--green); background: rgba(138,240,181,.08); }
+    table { width: 100%; border-collapse: collapse; margin: 18px 0; }
+    th, td { border: 1px solid var(--line); padding: 12px; text-align: left; vertical-align: top; }
+    th { background: rgba(255,255,255,.06); color: var(--gold); }
+    .toc a { display: block; padding: 6px 0; text-decoration: none; color: var(--muted); }
+    .toc a:hover { color: var(--blue); }
+    footer { border-top: 1px solid var(--line); color: var(--muted); padding: 36px 24px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="eyebrow">AI Freedom Trust Federation · Architecture Specification v1.0 Draft</div>
+      <h1>BookSmith Federation OS as the Universal Federation Operating System</h1>
+      <p class="subtitle">A full operating-system architecture document for the local-first, AI-native, federated web desktop that unifies authoring, publishing, repository infrastructure, governance, identity, marketplace, provider nodes, and the economic layer into one coherent user-owned environment.</p>
+      <div class="callout ok"><strong>Canon Rule:</strong> user input is accepted canon. AI output is a proposal until explicitly approved by the user. This rule governs every repository, application, service, command, workflow, marketplace listing, publication action, and future economic operation.</div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="toc card">
+      <h2 style="margin-top:0;border-top:0;padding-top:0;">Table of Contents</h2>
+      <a href="#mission">1. Mission</a>
+      <a href="#identity">2. Operating System Identity</a>
+      <a href="#layers">3. Federation Layer Model</a>
+      <a href="#repos">4. Repository Relationship Model</a>
+      <a href="#boot">5. Boot Sequence</a>
+      <a href="#manifests">6. Federation Application Manifest Standard</a>
+      <a href="#commands">7. Command Namespace Standard</a>
+      <a href="#services">8. Service Discovery and API Placeholders</a>
+      <a href="#permissions">9. Permissions and Trust Model</a>
+      <a href="#workspaces">10. Workspace, Storage, and Files</a>
+      <a href="#events">11. Event Bus and Background Services</a>
+      <a href="#install">12. Application Installation Lifecycle</a>
+      <a href="#roadmap">13. Implementation Roadmap</a>
+      <a href="#developer">14. Developer Contract</a>
+    </section>
+
+    <section id="mission">
+      <h2>1. Mission</h2>
+      <p>BookSmith Federation OS is the primary user-facing operating system of the AI Freedom Trust Federation. It is not merely another application, web page, publishing tool, or repository. It is the command center through which a user interacts with the Federation as a single coherent environment while every underlying repository remains sovereign, inspectable, modular, replaceable, and independently useful.</p>
+      <p>The operating system must feel familiar to users who understand Android, Apple, Windows, Linux, and ChromeOS, while becoming something distinct: a federation-native web operating system for creating, organizing, publishing, preserving, synchronizing, governing, and monetizing human knowledge. It combines Android's application enumeration model, Apple's cohesive user experience, Windows' desktop productivity, Linux's open modularity, and Federation sovereignty.</p>
+      <p>The OS should hide unnecessary complexity from normal users while exposing complete inspectability to power users, authors, maintainers, trustees, developers, and federation operators. Every action must have a source, a status, a permission boundary, an owner, a risk level, a rollback path where possible, and a human approval path where required.</p>
+    </section>
+
+    <section id="identity">
+      <h2>2. Operating System Identity</h2>
+      <p>The name of the operating system repository is <strong>BookSmith-Federation-OS</strong>. It is the web desktop, workspace shell, application launcher, task center, notification center, settings center, identity session, file browser, and command palette for the AI Freedom Trust Federation.</p>
+      <p>The operating system does not duplicate the responsibility of the other repositories. Instead, it discovers them, registers them, presents them as applications or services, and gives the user a single place to operate the federation.</p>
+      <div class="grid">
+        <div class="card"><strong>Android-like</strong><br />Applications are discoverable, installable, permissioned, and enumerable through manifests.</div>
+        <div class="card"><strong>Apple-like</strong><br />The user experience is unified, calm, polished, and centered on creative flow.</div>
+        <div class="card"><strong>Windows-like</strong><br />Users can multitask through windows, taskbars, files, productivity apps, and background jobs.</div>
+        <div class="card"><strong>Linux-like</strong><br />Everything is modular, inspectable, local-first, scriptable, and replaceable.</div>
+      </div>
+    </section>
+
+    <section id="layers">
+      <h2>3. Federation Layer Model</h2>
+      <p>The Federation is organized as layers. Each layer has a primary responsibility, but layers communicate through explicit manifests, commands, APIs, events, and permissions rather than hidden coupling.</p>
+      <pre><code>Human Layer
+  ↓
+BookSmith Federation OS Layer
+  ↓
+Application Layer
+  ↓
+Federation Services Layer
+  ↓
+Infrastructure Layer
+  ↓
+Knowledge and Publishing Layer
+  ↓
+Economic Layer
+  ↓
+Governance Layer</code></pre>
+      <p>The human remains above every automated layer. The operating system is the user's control surface, not an autonomous authority. AI may assist, recommend, classify, build, warn, and draft, but high-risk decisions remain human-governed.</p>
+    </section>
+
+    <section id="repos">
+      <h2>4. Repository Relationship Model</h2>
+      <p>The Federation is not a random collection of repositories. Each repository should have one primary responsibility and may expose multiple capabilities. The operating system presents those capabilities to the user as applications, services, background daemons, or marketplace extensions.</p>
+      <table>
+        <thead><tr><th>Repository</th><th>Primary Role</th><th>How BookSmith Federation OS Uses It</th></tr></thead>
+        <tbody>
+          <tr><td>BookSmith-Federation-OS</td><td>Operating system and user shell</td><td>Owns desktop UX, launcher, command palette, task center, system health, settings, workspace session, app discovery, and integration surfaces.</td></tr>
+          <tr><td>booksmith-ai</td><td>Authoring and publishing engine</td><td>Provides manuscripts, proofing, figures, diagrams, citations, LaTeX, PDF, EPUB, HTML, DOCX, publication gates, and book intelligence.</td></tr>
+          <tr><td>AIFT-Forge</td><td>Repository, agent, build, provider, workflow, and federation infrastructure</td><td>Provides Git/repo services, local AI provider registry, agents, workflows, tool permissions, build farm, collaboration, self-improvement, synchronization, and local automation.</td></tr>
+          <tr><td>AI-Freedom-Trust</td><td>Constitution and governance</td><td>Provides doctrine, ethics, permission principles, constitutional boundaries, trust records, approval rules, and governance language.</td></tr>
+          <tr><td>VPS</td><td>Provider-node and deployment infrastructure</td><td>Provides hosting, deployment, routing, containers, provider nodes, monitoring, recovery, scaling, and federation network operations.</td></tr>
+          <tr><td>Aether_Coin_biozonecurrency</td><td>Economic protocol</td><td>Provides wallet, treasury, marketplace settlement, royalties, revenue splits, cooperative accounting, and future Biozo currency rails.</td></tr>
+          <tr><td>www.aifreedomtrust.com</td><td>Public portal and marketplace surface</td><td>Provides public documentation, onboarding, downloads, public publishing, discoverability, and marketplace presentation.</td></tr>
+        </tbody>
+      </table>
+      <p>Additional applied repositories such as Capital City Provisions, TastyCutz, DynastyLink, TheMindOfAll, and BioZone Harmony Boost should be treated as Federation applications or domain-specific services. They should not be hard-coded into the OS. They should register themselves through manifests.</p>
+    </section>
+
+    <section id="boot">
+      <h2>5. Operating System Boot Sequence</h2>
+      <p>The boot sequence defines how BookSmith Federation OS starts and discovers the local federation environment. The system should eventually support browser-only mode, local desktop mode, Termux/Android mode, node-agent mode, and hosted mode, but all modes should follow the same conceptual boot lifecycle.</p>
+      <pre><code>1. Load OS runtime configuration
+2. Detect local workspace root
+3. Load user identity session
+4. Load federation membership records
+5. Discover installed repository manifests
+6. Validate each repository capability declaration
+7. Register applications, services, routes, commands, and permissions
+8. Start approved background services
+9. Open desktop shell
+10. Display system health, notifications, and pending approvals</code></pre>
+      <h3>Boot Command Placeholders</h3>
+      <pre><code># Start the web operating system shell
+npm run os:dev
+
+# Build the static or production OS bundle
+npm run os:build
+
+# Start a local node agent for sync and background jobs
+npm run node-agent:dev
+
+# Run the OS boot diagnostic
+npm run os:doctor
+
+# Inspect discovered federation applications
+npm run os:apps
+
+# Validate all manifests
+npm run os:manifests:check</code></pre>
+      <h3>Future CLI Shape</h3>
+      <pre><code>booksmith-os boot
+booksmith-os doctor
+booksmith-os apps list
+booksmith-os services list
+booksmith-os commands list
+booksmith-os permissions audit
+booksmith-os workspace open &lt;workspace-id&gt;</code></pre>
+    </section>
+
+    <section id="manifests">
+      <h2>6. Federation Application Manifest Standard</h2>
+      <p>Every repository should eventually expose a manifest so the operating system can discover it without hard-coded knowledge. The manifest is the Federation equivalent of AndroidManifest.xml, a web app manifest, a package manifest, and a service descriptor combined.</p>
+      <p>The recommended root-level file is:</p>
+      <pre><code>app.manifest.json</code></pre>
+      <h3>Manifest Placeholder</h3>
+      <pre><code>{
+  "schema": "aift.federation.app-manifest.v1",
+  "id": "example-app",
+  "name": "Example Federation App",
+  "repository": "AIFreedomTrustFederation/example-app",
+  "version": "0.1.0",
+  "status": "prototype",
+  "category": "application | service | infrastructure | governance | economy | publishing",
+  "description": "Plain-language description of what this repository provides.",
+  "entrypoints": {
+    "web": "apps/web/index.html",
+    "api": "apps/api/server.mjs",
+    "cli": "packages/cli/index.mjs",
+    "agent": "apps/node-agent/index.mjs"
+  },
+  "capabilities": [
+    "files.read",
+    "workspace.write",
+    "ai.propose",
+    "patch.review",
+    "publish.build"
+  ],
+  "commands": [
+    {
+      "namespace": "books",
+      "command": "books create",
+      "description": "Create a new book record.",
+      "risk": "low",
+      "approvalRequired": false
+    }
+  ],
+  "services": [
+    {
+      "id": "booksmith.publishing",
+      "type": "local-api",
+      "health": "/health",
+      "routes": "/routes.json"
+    }
+  ],
+  "permissions": {
+    "filesystem": "workspace-scoped",
+    "network": "explicit",
+    "ai": "proposal-only",
+    "payments": "approval-required",
+    "publishing": "approval-required"
+  },
+  "ui": {
+    "launcherTitle": "Example App",
+    "icon": "assets/icon.svg",
+    "window": {
+      "defaultWidth": 1100,
+      "defaultHeight": 760
+    }
+  },
+  "governance": {
+    "canonRule": "user-input-is-canon-ai-output-is-proposal",
+    "approvalPolicy": "human-required-for-canon-and-high-risk-actions"
+  }
+}</code></pre>
+      <p>Supporting files may include capabilities.json, permissions.json, health.json, version.json, routes.json, commands.json, events.json, and services.json. These can be split out when a repository grows beyond a simple manifest.</p>
+    </section>
+
+    <section id="commands">
+      <h2>7. Command Namespace Standard</h2>
+      <p>Commands are the common language between users, applications, services, agents, scripts, and future automation. The OS command framework should reserve clear namespaces so every repository can register commands without collision.</p>
+      <table>
+        <thead><tr><th>Namespace</th><th>Purpose</th><th>Example Commands</th></tr></thead>
+        <tbody>
+          <tr><td>os</td><td>Operating system control</td><td>os boot, os doctor, os apps, os settings</td></tr>
+          <tr><td>workspace</td><td>User workspace management</td><td>workspace create, workspace open, workspace sync</td></tr>
+          <tr><td>books</td><td>Library and book records</td><td>books create, books list, books archive</td></tr>
+          <tr><td>manuscript</td><td>Chapter and source editing</td><td>manuscript import, manuscript outline, manuscript render</td></tr>
+          <tr><td>patch</td><td>AI proposal review</td><td>patch list, patch review, patch approve, patch reject</td></tr>
+          <tr><td>publish</td><td>Publication builds and releases</td><td>publish build, publish gate, publish release</td></tr>
+          <tr><td>forge</td><td>Repository and build infrastructure</td><td>forge repo import, forge build run, forge agent list</td></tr>
+          <tr><td>federation</td><td>Membership and synchronization</td><td>federation join, federation sync, federation publish</td></tr>
+          <tr><td>wallet</td><td>Economic operations</td><td>wallet status, wallet royalties, wallet settlement</td></tr>
+          <tr><td>trust</td><td>Governance and identity</td><td>trust policy, trust approve, trust audit</td></tr>
+        </tbody>
+      </table>
+      <h3>Command Declaration Placeholder</h3>
+      <pre><code>{
+  "schema": "aift.federation.command.v1",
+  "namespace": "publish",
+  "name": "publish build",
+  "summary": "Build publication outputs for the active book.",
+  "risk": "medium",
+  "approvalRequired": false,
+  "inputSchema": {
+    "bookId": "string",
+    "formats": ["pdf", "epub", "html"]
+  },
+  "outputSchema": {
+    "buildId": "string",
+    "artifacts": "array"
+  },
+  "eventsEmitted": ["publish.build.started", "publish.build.completed", "publish.build.failed"]
+}</code></pre>
+      <h3>Command Placeholders</h3>
+      <pre><code># Operating system
+booksmith-os os boot
+booksmith-os os doctor
+booksmith-os os apps list
+booksmith-os os services list
+
+# Applications
+booksmith-os app install ./path-or-github-url
+booksmith-os app remove &lt;app-id&gt;
+booksmith-os app permissions &lt;app-id&gt;
+
+# Books and publishing
+booksmith-os books create "My Book"
+booksmith-os manuscript import ./chapter.md --book &lt;book-id&gt;
+booksmith-os patch review --book &lt;book-id&gt;
+booksmith-os publish build --book &lt;book-id&gt; --formats pdf,epub,html
+
+# Federation
+booksmith-os federation status
+booksmith-os federation sync
+booksmith-os federation publish --release &lt;release-id&gt;
+
+# Economy
+booksmith-os wallet status
+booksmith-os wallet royalties --book &lt;book-id&gt;
+booksmith-os marketplace listing create --release &lt;release-id&gt;</code></pre>
+    </section>
+
+    <section id="services">
+      <h2>8. Service Discovery and API Placeholders</h2>
+      <p>Applications should not directly import each other's internals unless they are intentionally packaged together. The operating system should discover services and communicate through explicit APIs, local adapters, events, and commands.</p>
+      <h3>Service Descriptor Placeholder</h3>
+      <pre><code>{
+  "schema": "aift.federation.service.v1",
+  "id": "booksmith-ai.publisher",
+  "providerRepository": "AIFreedomTrustFederation/booksmith-ai",
+  "type": "local-api",
+  "status": "planned",
+  "healthEndpoint": "/api/publisher/health",
+  "routesEndpoint": "/api/publisher/routes",
+  "permissions": ["workspace.read", "workspace.write", "artifacts.write"],
+  "commands": ["publish build", "publish proof", "citations audit"]
+}</code></pre>
+      <h3>REST Endpoint Placeholders</h3>
+      <pre><code>GET  /api/os/health
+GET  /api/os/apps
+GET  /api/os/services
+GET  /api/os/commands
+GET  /api/os/permissions
+POST /api/os/command
+
+GET  /api/workspaces
+POST /api/workspaces
+GET  /api/workspaces/:workspaceId/files
+POST /api/workspaces/:workspaceId/intake
+
+GET  /api/books
+POST /api/books
+GET  /api/books/:bookId
+POST /api/books/:bookId/manuscript/import
+POST /api/books/:bookId/patches
+POST /api/books/:bookId/publish/build
+
+GET  /api/federation/status
+POST /api/federation/sync
+POST /api/federation/publish
+
+GET  /api/marketplace/listings
+POST /api/marketplace/listings
+GET  /api/wallet/status</code></pre>
+      <p>All endpoints must clearly distinguish prototype, planned, simulated, implemented, and audited behavior. Security and economic claims must never be implied before implementation and review.</p>
+    </section>
+
+    <section id="permissions">
+      <h2>9. Permissions and Trust Model</h2>
+      <p>Permissions must be understandable by normal users and precise enough for developers. Every application declares permissions before use. The operating system presents permissions during installation, before high-risk actions, and during audits.</p>
+      <p>The default rule is deny-by-default for high-risk operations. Read-only workspace actions may be allowed when clearly scoped. AI-generated content is never canon until accepted. Publishing, payment, identity, trust, marketplace, deployment, deletion, and public routing actions require explicit approval.</p>
+      <h3>Permission Placeholder</h3>
+      <pre><code>{
+  "schema": "aift.federation.permissions.v1",
+  "appId": "booksmith-ai",
+  "permissions": [
+    {
+      "id": "workspace.read",
+      "risk": "low",
+      "description": "Read files in the active workspace.",
+      "approval": "install-time"
+    },
+    {
+      "id": "workspace.write",
+      "risk": "medium",
+      "description": "Write approved changes to workspace files.",
+      "approval": "per-action-for-ai-output"
+    },
+    {
+      "id": "publish.public",
+      "risk": "high",
+      "description": "Publish selected releases to public or federation marketplace surfaces.",
+      "approval": "explicit-human-approval"
+    },
+    {
+      "id": "wallet.settlement",
+      "risk": "critical",
+      "description": "Move, settle, distribute, or account for economic value.",
+      "approval": "explicit-human-approval-plus-audit-log"
+    }
+  ]
+}</code></pre>
+    </section>
+
+    <section id="workspaces">
+      <h2>10. Workspace, Storage, and Files</h2>
+      <p>A workspace is the user's local-first operating environment. It may contain books, manuscripts, sources, figures, citations, build artifacts, release records, marketplace drafts, identity records, and sync metadata. A workspace may be backed up to GitHub, Google Drive, external storage, federation nodes, or future decentralized storage adapters, but the user should understand exactly where data lives.</p>
+      <h3>Workspace Layout Placeholder</h3>
+      <pre><code>workspace/
+├── workspace.manifest.json
+├── books/
+│   └── &lt;book-id&gt;/
+│       ├── book.manifest.json
+│       ├── manuscript/
+│       ├── sources/
+│       ├── figures/
+│       ├── citations/
+│       ├── patches/
+│       ├── builds/
+│       └── releases/
+├── uploads/
+├── apps/
+├── services/
+├── federation/
+├── logs/
+└── audit/</code></pre>
+      <h3>Workspace Commands</h3>
+      <pre><code>booksmith-os workspace create "My Sovereign Library"
+booksmith-os workspace open &lt;workspace-id&gt;
+booksmith-os workspace status
+booksmith-os workspace backup github
+booksmith-os workspace backup drive
+booksmith-os workspace export ./backup.zip
+booksmith-os workspace audit</code></pre>
+    </section>
+
+    <section id="events">
+      <h2>11. Event Bus and Background Services</h2>
+      <p>The operating system should include an event bus so apps and services can react without tight coupling. Events are recorded, inspectable, and scoped. Sensitive events should be redacted when displayed publicly or synchronized outside the local workspace.</p>
+      <h3>Event Placeholder</h3>
+      <pre><code>{
+  "schema": "aift.federation.event.v1",
+  "id": "event-000000",
+  "type": "book.patch.approved",
+  "workspaceId": "workspace-main",
+  "actor": "local-user",
+  "appId": "booksmith-ai",
+  "risk": "medium",
+  "payload": {
+    "bookId": "book-001",
+    "patchId": "patch-001"
+  },
+  "createdAt": "2026-01-01T00:00:00.000Z"
+}</code></pre>
+      <h3>Event Command Placeholders</h3>
+      <pre><code>booksmith-os events tail
+booksmith-os events show &lt;event-id&gt;
+booksmith-os events audit --workspace &lt;workspace-id&gt;
+booksmith-os service start node-agent
+booksmith-os service stop node-agent
+booksmith-os service logs node-agent</code></pre>
+    </section>
+
+    <section id="install">
+      <h2>12. Application Installation Lifecycle</h2>
+      <p>The installation lifecycle is inspired by Android app installation, browser extension permissions, package manager manifests, and desktop application registration. Installation should never mean blind trust. It means the OS has discovered a repository, validated its manifest, shown its requested permissions, and registered only the capabilities the user approved.</p>
+      <pre><code>1. Discover repository
+2. Fetch or open app.manifest.json
+3. Validate schema
+4. Display app identity, source, status, and permissions
+5. Ask user approval for requested capabilities
+6. Register launcher entries
+7. Register commands
+8. Register services
+9. Register event subscriptions
+10. Run app health check
+11. Add app to settings and audit surfaces</code></pre>
+      <h3>Installation Commands</h3>
+      <pre><code>booksmith-os app discover github:AIFreedomTrustFederation/booksmith-ai
+booksmith-os app inspect github:AIFreedomTrustFederation/booksmith-ai
+booksmith-os app install github:AIFreedomTrustFederation/booksmith-ai
+booksmith-os app permissions booksmith-ai
+booksmith-os app health booksmith-ai
+booksmith-os app uninstall booksmith-ai</code></pre>
+    </section>
+
+    <section id="roadmap">
+      <h2>13. Implementation Roadmap</h2>
+      <p>The OS should be built in layers, beginning with the static architecture, then the shell, then manifests, then applications, then service routing, then approvals, then synchronization, then marketplace and economic operations.</p>
+      <h3>Phase 1: Architecture and Static Landing Page</h3>
+      <p>Create the architecture specification, static landing page, and initial docs. This page is part of that phase.</p>
+      <pre><code>mkdir -p docs
+# Add docs/federation-os-architecture.html
+git add docs/federation-os-architecture.html
+git commit -m "Add Federation OS architecture landing page"
+git push origin main</code></pre>
+      <h3>Phase 2: Web OS Shell</h3>
+      <pre><code>npm create vite@latest apps/web-os -- --template react-ts
+npm run os:dev
+npm run os:build</code></pre>
+      <h3>Phase 3: Manifest Registry</h3>
+      <pre><code>booksmith-os app inspect ./app.manifest.json
+booksmith-os app install ./app.manifest.json
+booksmith-os apps list</code></pre>
+      <h3>Phase 4: BookSmith AI Bridge</h3>
+      <pre><code>booksmith-os app install github:AIFreedomTrustFederation/booksmith-ai
+booksmith-os books import ./example-book
+booksmith-os publish build --book example-book --formats pdf,html</code></pre>
+      <h3>Phase 5: Forge Infrastructure Bridge</h3>
+      <pre><code>booksmith-os app install github:AIFreedomTrustFederation/AIFT-Forge
+booksmith-os forge status
+booksmith-os forge build run standard-validation</code></pre>
+      <h3>Phase 6: Federation Sync</h3>
+      <pre><code>booksmith-os federation status
+booksmith-os federation peer add &lt;peer-id&gt;
+booksmith-os federation sync --workspace &lt;workspace-id&gt;</code></pre>
+      <h3>Phase 7: Marketplace and Economy</h3>
+      <pre><code>booksmith-os marketplace listing create --release &lt;release-id&gt;
+booksmith-os wallet royalties --book &lt;book-id&gt;
+booksmith-os wallet settlement preview --listing &lt;listing-id&gt;</code></pre>
+    </section>
+
+    <section id="developer">
+      <h2>14. Developer Contract</h2>
+      <p>Every Federation repository should be designed so a future developer, agent, or operator can answer these questions quickly: What does this repository do? What layer does it belong to? What apps does it expose? What services does it provide? What commands does it register? What permissions does it request? What data does it read or write? What events does it emit? What is implemented, what is prototype, and what is only planned?</p>
+      <div class="callout danger"><strong>Implementation-status discipline:</strong> planned, prototype, simulated, implemented, audited, and production-ready features must never be blurred together. The Federation must be cryptographically humble and operationally honest.</div>
+      <h3>Minimum Repository Contract</h3>
+      <pre><code>README.md
+app.manifest.json
+docs/ARCHITECTURE.md
+docs/COMMANDS.md
+docs/PERMISSIONS.md
+docs/STATUS.md
+scripts/doctor.sh or npm run doctor
+scripts/smoke.sh or npm run smoke</code></pre>
+      <h3>Commit Placeholder</h3>
+      <pre><code>git status
+git add .
+git commit -m "Add Federation OS repository contract"
+git push origin main</code></pre>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p>BookSmith Federation OS · AI Freedom Trust Federation · Architecture Specification v1.0 Draft</p>
+      <p>User input is canon. AI output is a proposal until approved.</p>
+    </div>
+  </footer>
+</body>
+</html>
