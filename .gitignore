@@ -1,39 +1,46 @@
-# dependencies
-node_modules
-.pnp
-.pnp.js
 
+!.env.example
+!.vscode/extensions.json
+# AIFT generated runtime state
+# TypeScript
 # build outputs
-.next
-out
-dist
-build
-coverage
-.turbo
-
+# dependencies
+# deployment
+# editor
 # local env
+# logs
+# system files
+*.tsbuildinfo
+.DS_Store
+.aift/capabilities.json
+.aift/federation-snapshot.json
+.aift/providers.json
+.aift/repos.json
+.aift/workflows.json
 .env
 .env.*
-!.env.example
-
-# logs
+.idea
+.next
+.pnp
+.pnp.js
+.turbo
+.vercel
+.vscode/*
+Thumbs.db
+build
+coverage
+dist
+next-env.d.ts
+node_modules
 npm-debug.log*
+out
+pnpm-debug.log*
+registry/*.cypher
+registry/*.dot
+registry/*.graphml
+registry/*.json
+registry/*.rdf
+reports/
+var/events/
 yarn-debug.log*
 yarn-error.log*
-pnpm-debug.log*
-
-# system files
-.DS_Store
-Thumbs.db
-
-# editor
-.vscode/*
-!.vscode/extensions.json
-.idea
-
-# TypeScript
-*.tsbuildinfo
-next-env.d.ts
-
-# deployment
-.vercel
