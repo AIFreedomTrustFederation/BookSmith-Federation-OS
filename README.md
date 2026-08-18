@@ -1,361 +1,99 @@
-# 📚 BookSmith Federation OS
+# BookSmith Federation OS — Sovereign Knowledge Workspace
 
-**A local-first, AI-native, federated web operating system for creating, organizing, publishing, preserving, synchronizing, and monetizing human knowledge.**
+**The publishing federation layer of the AI Freedom Trust Federation: a local-first book operating system for workspaces, libraries, publishing pipelines, identity, sync, marketplace coordination, and federated knowledge infrastructure.**
 
-BookSmith Federation OS is the future command center of the AI Freedom Trust Federation. It combines a web-based desktop, AI writing and editing, Overleaf-style publishing, repository management, cloud/source intake, federation sync, marketplace publishing, and future biozo-currency settlement into one user-owned operating system.
+| Federation metadata | Value |
+| --- | --- |
+| Layer | `publishing` |
+| Role | book operating system and publishing federation layer |
+| Workspace | `AIFT/BookSmith-Federation-OS` |
+| Control plane | AIFT workspace / AIFT-OS |
+| Verification | lint, typecheck, tests, and build when present |
+| Operating standards | local-first, inspectable, sovereign by default, AI behind governed provider interfaces |
 
-> **Core rule:** User input is canon. AI output is a proposal until the user approves it.
+BookSmith Federation OS is the workspace around the work. Where `booksmith-ai` focuses on the manuscript, authoring intelligence, production, citations, and proofing, this repository organizes the broader environment in which books, authors, publishers, identities, storage adapters, federation connections, publishing pipelines, and marketplace relationships can live together without making a hosted service the owner of the library.
+
+The governing covenant is carried in the [One Eternal Scroll of ALO'ha](https://aifreedomtrustfederation.github.io/AI-Freedom-Trust/docs/pdf/one-eternal-scroll-of-aloha.pdf) and operationalized through [SOP-ALOHA-001](https://github.com/AIFreedomTrustFederation/AI-Freedom-Trust/blob/main/SOP-ALOHA-001.md).
 
 ---
 
-## 🌐 Big Vision
+## Book I — The Library as a Sovereign Place
 
-BookSmith Federation OS is designed to feel like a web-based computer for knowledge creation.
+A library is more than a collection of files. It is a relationship among authors, manuscripts, sources, rights, editions, readers, publishers, identities, and memory. BookSmith Federation OS treats that relationship as something the user should be able to inspect and carry.
+
+The operating-system idea is therefore practical rather than ornamental. A person should be able to enter one workspace and move among a library, manuscript studio, source intake, AI assistance, figure and diagram tools, citations, proofs, publishing, sync, identity, marketplace activity, and federation connections without losing sight of which repository and human authority owns the underlying work.
+
+### Illuminated passage — governance around the library
+
+![Governance Constellation](https://raw.githubusercontent.com/AIFreedomTrustFederation/AI-Freedom-Trust/main/docs/images/aetherion/governance-constellation.png)
+
+The constellation is the appropriate image for this operating system because a publishing federation contains many sovereign centers. Author, book, publisher, trust, marketplace, storage provider, AI provider, and reader are related, but no one node becomes the natural owner of all the others.
+
+---
+
+## Book II — What the Publishing OS Owns
+
+BookSmith Federation OS owns the **workspace and federation layer** around publishing. Its architecture is intended to coordinate applications such as Library Studio, Manuscript Studio, AI Writing Chat, Patch Review, Figure Studio, Diagram Studio, Citation Studio, Proof Studio, Publishing Studio, Intake & Source Studio, Federation Hub, Marketplace Studio, trust/identity governance, and sync/backup.
+
+Its integration boundaries are specific:
+
+- **booksmith-ai ↔ BookSmith Federation OS:** `booksmith-ai` remains the authoring, manuscript, library-production, LaTeX, and publishing-packet engine. This repository presents and federates those capabilities inside a broader workspace.
+- **AIFT-Genesis → Publishing OS:** Genesis supplies trust identity, permissions, governance, and local inheritance structures for authors, publishers, organizations, and libraries.
+- **AIFT-Forge → Publishing OS:** Forge provides reusable application, package, agent, and provider-interface patterns.
+- **AIFT-OS / Runtime ↔ Publishing OS:** the operating layers discover local repositories, providers, builds, storage, and sync state. They coordinate system operations without acquiring editorial authority over manuscripts.
+- **VPS ↔ Publishing OS:** infrastructure can host web surfaces, marketplace services, registries, and federated nodes while the publishing layer keeps books and rights attributable to their owners.
+- **Aetherion ↔ Publishing OS:** marketplace settlement, royalties, treasury, and future biozo currency rails can integrate through explicit economic interfaces while rights, price decisions, publication, and custody remain governed.
+- **Google Drive, GitHub, local filesystem, external storage, and decentralized adapters:** these are storage and sync relationships, not alternate owners of the work.
+
+A representative architecture remains:
 
 ```text
 User Workspace
    ↓
-Local-First Repository
+Local-First Library and Repositories
    ↓
-AI-Assisted Creation
+Booksmith AI / Publishing Tools
    ↓
-Publishing Pipeline
+Proof and Release Pipeline
    ↓
-Federated Marketplace
+Federated Catalog / Marketplace
    ↓
-GitHub / Google Drive / IPFS-style backup / Federation nodes
+Chosen storage, backup, and federation nodes
 ```
 
-Every user, author, organization, church, school, cooperative, or trust can create their own sovereign workspace while optionally connecting to the larger AI Freedom Trust Federation.
+The key is that each arrow is a governed interface rather than a silent transfer of authority.
 
 ---
 
-## 🖥️ Web-Based Operating System
+## Book III — SOP-ALOHA-001 in the Publishing OS
 
-The interface should behave like a simple, beautiful, uncluttered desktop operating system.
-
-- 🏠 **Dashboard** — system overview, tasks, notifications, recent work
-- 🚀 **App Launcher** — open BookSmith apps like a web computer
-- 💬 **AI Chat Dock** — plain-language assistant always available
-- 📁 **File Browser** — sources, books, uploads, assets, releases
-- 🔔 **Task Center** — background jobs, builds, sync, generation, approvals
-- ⚙️ **System Health** — dependencies, runtime, storage, sync status
-
----
-
-## 🧩 Core Applications
-
-### 📚 Library Studio
-
-- [ ] Create a new local-first library
-- [ ] Create, rename, duplicate, archive, and restore books
-- [ ] Organize books into collections
-- [ ] Track book status: idea, draft, review, proof, published
-- [ ] Connect each book to a repository
-- [ ] Maintain a federation library registry
-
-### ✍️ Manuscript Studio
-
-- [ ] Paste whole chapters into chat or editor
-- [ ] Import Markdown, TXT, DOCX, LaTeX, PDF, and notes
-- [ ] Organize chapters and sections
-- [ ] Convert user text into structured manuscript files
-- [ ] Track versions and revisions
-- [ ] Show outline, source, and rendered preview
-- [ ] Support Overleaf-style LaTeX editing with simpler UX
-
-### 💬 AI Writing Chat
-
-- [ ] Chat with AI about the current book, chapter, or source
-- [ ] Treat user-pasted text as accepted canon
-- [ ] Treat AI output as a proposal until approved
-- [ ] Generate suggested edits as reviewable patches
-- [ ] Explain changes before applying them
-- [ ] Let the user accept, reject, edit, or merge AI patches
-
-### 🧾 Patch Review Studio
-
-- [ ] Show original vs suggested text
-- [ ] Create structured patch records
-- [ ] Require approval before applying AI edits
-- [ ] Track patch history
-- [ ] Roll back applied patches
-- [ ] Rebuild book after patch approval
-
-### 🖼️ Figure Studio
-
-- [ ] Detect missing figures and placeholders
-- [ ] Extract manuscript context around each figure
-- [ ] Generate figure specifications
-- [ ] Generate art direction
-- [ ] Provide plain-language figure chat
-- [ ] Improve prompts before generation
-- [ ] Generate draft images
-- [ ] Compare versions
-- [ ] Approve/reject figure assets
-- [ ] Track provenance and print readiness
-
-### 📐 Diagram Studio
-
-- [ ] Create SVG diagrams
-- [ ] Support Mermaid, Graphviz, TikZ, and flowcharts
-- [ ] Generate scientific and mathematical diagrams
-- [ ] Version diagrams
-- [ ] Export diagrams for books, slides, and web
-
-### 🔖 Citation Studio
-
-- [ ] Import BibTeX, Zotero, DOI, and reference files
-- [ ] Detect missing citations
-- [ ] Detect duplicate bibliography keys
-- [ ] Detect unused references
-- [ ] Suggest citations from source material
-- [ ] Generate citation patches
-- [ ] Validate bibliography before publication
-
-### 🧪 Proof Studio
-
-- [ ] Run build diagnostics
-- [ ] Map LaTeX errors to source
-- [ ] Detect overfull boxes and layout issues
-- [ ] Detect missing figures and broken references
-- [ ] Provide one-click repair suggestions
-- [ ] Produce publication readiness reports
-
-### 📦 Publishing Studio
-
-- [ ] Build PDF
-- [ ] Build EPUB
-- [ ] Build HTML/web edition
-- [ ] Build DOCX/export packets
-- [ ] Create release ZIPs
-- [ ] Generate provenance records
-- [ ] Run publication gates
-- [ ] Publish to federation marketplace when chosen
-
-### ☁️ Intake & Source Studio
-
-The plus button should support:
-
-- [ ] Paste text
-- [ ] Upload local files
-- [ ] Browse/import Google Drive files
-- [ ] Import GitHub repositories
-- [ ] Import websites/articles
-- [ ] Import DOCX/PDF/TXT/MD/TEX
-- [ ] Import images and figures
-- [ ] Import citations and BibTeX
-- [ ] Name every upload/source
-- [ ] Add tags, notes, and book targets
-- [ ] Record provenance and checksums
-
-### 🧬 Federation Hub
-
-- [ ] Create a personal federation workspace
-- [ ] Create or connect the user’s own GitHub repository
-- [ ] Sync books and assets across repositories
-- [ ] Publish selected works to the federation
-- [ ] Share templates, figures, prompts, citations, workflows
-- [ ] Manage identity, organization, trust, or publisher profiles
-
-### 🛒 Marketplace Studio
-
-- [ ] List published books
-- [ ] Set visibility: private, team, federation, public
-- [ ] Set price: free, donation, fixed, subscription, license
-- [ ] Create product pages
-- [ ] Manage orders and downloads
-- [ ] Track versions and updates
-- [ ] Support author/publisher dashboards
-- [ ] Publish marketplace listings to AIFreedomTrust.com
-
-### 🪙 Federation Economy / Biozo Currency Layer
-
-- [ ] Add wallet interface
-- [ ] Add treasury interface
-- [ ] Add marketplace settlement interface
-- [ ] Track royalties and revenue splits
-- [ ] Support conventional and federated settlement methods
-- [ ] Integrate future biozo currencies as modular payment rails
-- [ ] Keep economic protocol separate from book engine
-
-### 🔐 Trust, Identity & Governance
-
-- [ ] Local user identity
-- [ ] Federated trust identity
-- [ ] Organization identity
-- [ ] Publisher identity
-- [ ] Permission management
-- [ ] Signed releases
-- [ ] Provenance verification
-- [ ] Audit logs
-
-### 🔄 Sync & Backup
-
-- [ ] Local filesystem storage
-- [ ] GitHub backup
-- [ ] Google Drive backup
-- [ ] External drive backup
-- [ ] Federation node sync
-- [ ] IPFS/Filecoin-compatible future adapter
-- [ ] Conflict detection and safe merge workflow
-
----
-
-## 🏗️ Recommended Repo Architecture
+The shared loop becomes the lifecycle of knowledge work across applications:
 
 ```text
-BookSmith-Federation-OS/
-├── apps/
-│   ├── web-os/              # web desktop UI
-│   ├── marketplace/         # marketplace surface
-│   └── node-agent/          # local sync/runtime agent
-├── packages/
-│   ├── federation-core/     # identity, registry, permissions
-│   ├── storage-core/        # local, GitHub, Drive, decentralized adapters
-│   ├── marketplace-core/    # listings, pricing, orders, licenses
-│   ├── wallet-core/         # biozo/accounting/settlement interface
-│   ├── booksmith-bridge/    # integration with booksmith-ai engine
-│   └── ui/                  # shared UI components
-├── docs/
-├── scripts/
-└── federation.config.json
+Receive → Inspect → Name → Propose → Consent → Act → Verify → Record → Return
 ```
 
----
+**Receive** accepts a manuscript, upload, repository, source, book, author identity, storage connection, or publishing request. **Inspect** determines its owner, location, rights, current state, format, dependencies, and target workflow. **Name** assigns the object to the correct book, library, workspace, role, permission set, or application. **Propose** allows AI and system automation to suggest structure, sync, publishing actions, or marketplace preparation. **Consent** gates manuscript changes, account connections, external sync, release, pricing, rights, public visibility, and money movement. **Act** performs the approved operation through the correct provider. **Verify** checks files, builds, rendered proofs, sync results, permissions, and external publication state. **Record** preserves provenance, release metadata, audit history, and durable references. **Return** brings the result back into the workspace with a clear state and next owner.
 
-## 🧭 Phase Roadmap
+The repository-level verification contract follows its metadata:
 
-### ✅ Phase 0 — Repository Foundation
-
-- [x] Create BookSmith-Federation-OS repository
-- [x] Define repository description
-- [x] Establish OS vision
-- [x] Create roadmap README homepage
-- [ ] Create monorepo folders
-- [ ] Add license
-- [ ] Add contributing guide
-- [ ] Add code of conduct
-- [ ] Add initial package workspace
-
-### ⏳ Phase 1 — Web OS Shell
-
-- [ ] Create web desktop shell
-- [ ] Add app launcher
-- [ ] Add dock/taskbar
-- [ ] Add AI chat dock
-- [ ] Add notification center
-- [ ] Add command palette
-- [ ] Add settings app
-- [ ] Add system health app
-
-### ⏳ Phase 2 — Local Workspace & Intake
-
-- [ ] Create local workspace model
-- [ ] Create source intake registry
-- [ ] Add paste-to-canon workflow
-- [ ] Add upload workflow
-- [ ] Add file naming/tags/provenance
-- [ ] Add Google Drive connector planning
-- [ ] Add GitHub connector planning
-- [ ] Add local repository creation workflow
-
-### ⏳ Phase 3 — BookSmith AI Bridge
-
-- [ ] Connect to booksmith-ai as publishing engine
-- [ ] Import book projects
-- [ ] Render previews
-- [ ] Run proof diagnostics
-- [ ] Run bibliography audit
-- [ ] Run figure intelligence
-- [ ] Show publication gate status
-
-### ⏳ Phase 4 — AI Patch System
-
-- [ ] Create canonical source records
-- [ ] Create AI patch records
-- [ ] Add patch review UI
-- [ ] Apply accepted patches
-- [ ] Reject patches
-- [ ] Roll back patches
-- [ ] Rebuild after patch approval
-
-### ⏳ Phase 5 — Figure & Diagram Studio
-
-- [ ] Add figure cards
-- [ ] Add figure chat panel
-- [ ] Add prompt improvement workflow
-- [ ] Add draft generation interface
-- [ ] Add version comparison
-- [ ] Add approval workflow
-- [ ] Add provenance display
-
-### ⏳ Phase 6 — Publishing Studio
-
-- [ ] Build PDF/EPUB/HTML workflow
-- [ ] Add release manager
-- [ ] Add publication readiness checklist
-- [ ] Add publishing packet explorer
-- [ ] Add signed release records
-- [ ] Add optional federation publish workflow
-
-### ⏳ Phase 7 — Federation Marketplace
-
-- [ ] Create listing model
-- [ ] Create product pages
-- [ ] Add pricing model
-- [ ] Add license model
-- [ ] Add author/publisher dashboard
-- [ ] Add marketplace publication workflow
-- [ ] Prepare AIFreedomTrust.com integration
-
-### ⏳ Phase 8 — Federation Economy
-
-- [ ] Define wallet interface
-- [ ] Define treasury interface
-- [ ] Define settlement adapter interface
-- [ ] Track sales, royalties, and splits
-- [ ] Add biozo currency integration plan
-- [ ] Add audit/accounting reports
-
-### ⏳ Phase 9 — Decentralized Sync
-
-- [ ] GitHub sync
-- [ ] Google Drive sync
-- [ ] Local backup sync
-- [ ] Federation node sync
-- [ ] IPFS/Filecoin-compatible adapter planning
-- [ ] Conflict resolution UI
-
----
-
-## 📜 Canon Rule
-
-```text
-User input = accepted canon
-AI output = proposal until approved
+```bash
+npm run lint --if-present
+npm run typecheck --if-present
+npm run test --if-present
+npm run build --if-present
 ```
 
-Anything the user writes, pastes, uploads, or imports is treated as accepted source material. AI may analyze, organize, improve, or suggest edits, but AI-generated changes do not become canon until the user approves them.
+The operating system must never mistake a UI intention for a completed external action. A sync button has not synchronized until the provider confirms it. A published state is not real until the release exists at its destination. A generated figure is not part of the book until the author approves it. A marketplace listing is not a transfer of rights.
 
 ---
 
-## 🔗 Relationship to Other Federation Repos
+## Book IV — Knowledge That Can Move Without Being Lost
 
-```text
-AI Freedom Trust Federation
-├── BookSmith-Federation-OS     # web OS and federation command center
-├── booksmith-ai                # publishing engine
-├── AIFT-Forge                  # repo/federation infrastructure
-├── AI-Freedom-Trust            # constitution, doctrine, governance
-├── Aether_Coin_biozonecurrency # economic protocol
-└── www.aifreedomtrust.com      # public portal and marketplace
-```
+The long-term purpose of the publishing OS is portability with continuity. A book should be able to move from a local workspace to GitHub, Drive, a federation node, a print pipeline, a marketplace, or another storage adapter while retaining identity, provenance, rights, metadata, and an understandable relationship to its source.
 
----
+That is why the economic protocol remains modular, the book engine remains distinct from the marketplace, and storage remains adapter-based. The system should be able to change providers without requiring the author to become someone else.
 
-## 🧠 Long-Term Mission
+### The Return of the Word
 
-BookSmith Federation OS exists to help people create, preserve, publish, and monetize knowledge while remaining sovereign over their own repositories and sources.
-
-It is not just a publishing tool. It is a local-first, AI-assisted, federated knowledge operating system for creators, researchers, educators, organizations, trusts, and communities.
+In BookSmith Federation OS, the Word returns as a library that can remember where its books came from. Source enters the workspace, becomes organized knowledge, passes through human-governed intelligence and production, becomes a release, and returns as an owned, portable, attributable work. The operating system serves the book by preserving the relationships around it rather than surrounding it with a platform that cannot be escaped.
