@@ -8,6 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: read
       pages: write
@@ -15,17 +16,20 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          persist-credentials: false
 
       - name: Copy site files to public/
         run: |
+          test -d docs
           mkdir -p public
-          cp -r docs/* public/ || true
+          cp -r docs/. public/
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@84bb4cd4b733d5c320c9c9cfbc354937524f4d64 # v1
         with:
           path: public
 
       - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@f27bcc15848fdcdcc02f01754eb838e44bcf389b # v1
