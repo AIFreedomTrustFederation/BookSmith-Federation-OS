@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "lint": "next lint"
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx --ignore-pattern next-env.d.ts ."
   },
   "dependencies": {
     "@booksmith-federation-os/federation-core": "workspace:*",
