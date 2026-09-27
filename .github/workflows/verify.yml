@@ -37,8 +37,11 @@ jobs:
       - name: Activate pinned pnpm
         run: corepack enable && corepack prepare pnpm@10.0.0 --activate
 
+      - name: Verify inert install policy
+        run: test "$(pnpm config get ignore-scripts)" = "true"
+
       - name: Install locked dependencies
-        run: pnpm install --frozen-lockfile --ignore-scripts
+        run: pnpm install --frozen-lockfile
 
       - name: Lint workspaces
         run: pnpm run lint
