@@ -75,14 +75,24 @@ Receive → Inspect → Name → Propose → Consent → Act → Verify → Reco
 
 **Receive** accepts a manuscript, upload, repository, source, book, author identity, storage connection, or publishing request. **Inspect** determines its owner, location, rights, current state, format, dependencies, and target workflow. **Name** assigns the object to the correct book, library, workspace, role, permission set, or application. **Propose** allows AI and system automation to suggest structure, sync, publishing actions, or marketplace preparation. **Consent** gates manuscript changes, account connections, external sync, release, pricing, rights, public visibility, and money movement. **Act** performs the approved operation through the correct provider. **Verify** checks files, builds, rendered proofs, sync results, permissions, and external publication state. **Record** preserves provenance, release metadata, audit history, and durable references. **Return** brings the result back into the workspace with a clear state and next owner.
 
-The repository-level verification contract follows its metadata:
+The repository-level verification contract matches hosted CI and uses the
+package manager version declared in `package.json`:
 
 ```bash
-npm run lint --if-present
-npm run typecheck --if-present
-npm run test --if-present
-npm run build --if-present
+corepack enable
+corepack prepare pnpm@10.0.0 --activate
+pnpm install --frozen-lockfile --ignore-scripts
+pnpm run lint
+pnpm run typecheck
+pnpm -r --if-present test
+pnpm run build
+git diff --check
+test -z "$(git status --porcelain)"
 ```
+
+Run the final clean-tree assertion from a clean committed checkout. While
+preparing a commit, use `git status --short` and confirm that only the intended
+files are changed.
 
 The operating system must never mistake a UI intention for a completed external action. A sync button has not synchronized until the provider confirms it. A published state is not real until the release exists at its destination. A generated figure is not part of the book until the author approves it. A marketplace listing is not a transfer of rights.
 
