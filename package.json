@@ -5,10 +5,10 @@
   "description": "Local-first, AI-native, federated web operating system for knowledge creation and publishing.",
   "packageManager": "pnpm@10.0.0",
   "scripts": {
-    "dev": "pnpm --filter @booksmith-federation-os/web-os dev",
-    "build": "pnpm -r build",
-    "typecheck": "pnpm -r typecheck",
-    "lint": "pnpm -r lint"
+    "dev": "corepack pnpm --filter @booksmith-federation-os/web-os dev",
+    "build": "corepack pnpm -r build",
+    "typecheck": "corepack pnpm -r typecheck",
+    "lint": "corepack pnpm -r lint"
   },
   "workspaces": [
     "apps/*",
