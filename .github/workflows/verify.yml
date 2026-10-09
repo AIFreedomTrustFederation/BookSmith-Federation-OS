@@ -41,7 +41,7 @@ jobs:
         run: test "$(pnpm config get ignore-scripts)" = "true"
 
       - name: Install locked dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --ignore-scripts
 
       - name: Lint workspaces
         run: pnpm run lint
