@@ -94,6 +94,14 @@ Run the final clean-tree assertion from a clean committed checkout. While
 preparing a commit, use `git status --short` and confirm that only the intended
 files are changed.
 
+### Verification scope and publishing authority
+
+The root [`package.json`](package.json) pins **pnpm 10.0.0** and defines `lint`, `typecheck`, and `build` scripts, but **does not define a root `test` script**. The documented `pnpm -r --if-present test` step skips workspaces without tests; a successful exit is not evidence that automated tests ran. Inspect the output and test counts before reporting coverage. The web application at [`apps/web-os/package.json`](apps/web-os/package.json) uses Next.js, TypeScript, and ESLint; its `build` invokes `next build`, not a publication or marketplace release.
+
+The [`aift.repo.json`](aift.repo.json) `verify` field uses `npm run ... --if-present`, which can skip absent scripts and differs from the pnpm-based commands documented above. Prefer the explicit pinned-pnpm workflow for local checks; do not treat metadata verification or a clean Git tree as proof of publishing integrity, rights ownership, provenance, or external sync success. A root `.github/workflows/ci.yml` was not present when this section was reviewed, so these commands are **local verification instructions**, not a claim of a passing hosted CI run.
+
+**Release boundary:** before external sync, publication, marketplace listing, or royalty settlement, obtain the author's or rights holder's approval and verify the target account, visibility, license, final artifact checksum or version, and provider-confirmed result. The repository's architectural descriptions are not evidence that such controls are already enforced end to end.
+
 The operating system must never mistake a UI intention for a completed external action. A sync button has not synchronized until the provider confirms it. A published state is not real until the release exists at its destination. A generated figure is not part of the book until the author approves it. A marketplace listing is not a transfer of rights.
 
 ---
