@@ -8,7 +8,7 @@
 | Role | book operating system and publishing federation layer |
 | Workspace | `AIFT/BookSmith-Federation-OS` |
 | Control plane | AIFT workspace / AIFT-OS |
-| Verification | lint, typecheck, tests, and build when present |
+| Verification | lint, typecheck, and build required; workspace tests when present |
 | Operating standards | local-first, inspectable, sovereign by default, AI behind governed provider interfaces |
 
 BookSmith Federation OS is the workspace around the work. Where `booksmith-ai` focuses on the manuscript, authoring intelligence, production, citations, and proofing, this repository organizes the broader environment in which books, authors, publishers, identities, storage adapters, federation connections, publishing pipelines, and marketplace relationships can live together without making a hosted service the owner of the library.
@@ -98,7 +98,7 @@ files are changed.
 
 The root [`package.json`](package.json) pins **pnpm 10.0.0** and defines `lint`, `typecheck`, and `build` scripts, but **does not define a root `test` script**. The documented `pnpm -r --if-present test` step skips workspaces without tests; a successful exit is not evidence that automated tests ran. Inspect the output and test counts before reporting coverage. The web application at [`apps/web-os/package.json`](apps/web-os/package.json) uses Next.js, TypeScript, and ESLint; its `build` invokes `next build`, not a publication or marketplace release.
 
-The [`aift.repo.json`](aift.repo.json) `verify` field uses `npm run ... --if-present`, which can skip absent scripts and differs from the pnpm-based commands documented above. Prefer the explicit pinned-pnpm workflow for local checks; do not treat metadata verification or a clean Git tree as proof of publishing integrity, rights ownership, provenance, or external sync success. A root `.github/workflows/ci.yml` was not present when this section was reviewed, so these commands are **local verification instructions**, not a claim of a passing hosted CI run.
+The [`aift.repo.json`](aift.repo.json) `verify` field invokes the pinned pnpm version through Corepack and requires lint, typecheck, and build. Workspace tests remain optional because the root package does not define a `test` script. The [Workspace Verification workflow](.github/workflows/verify.yml) runs equivalent checks on pushes to `main` and pull requests. A successful workflow does not prove publishing integrity, rights ownership, provenance, or external sync success. Inspect the actual workflow run and test counts before reporting coverage.
 
 **Release boundary:** before external sync, publication, marketplace listing, or royalty settlement, obtain the author's or rights holder's approval and verify the target account, visibility, license, final artifact checksum or version, and provider-confirmed result. The repository's architectural descriptions are not evidence that such controls are already enforced end to end.
 

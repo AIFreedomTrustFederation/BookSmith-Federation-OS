@@ -43,7 +43,7 @@ git pull --ff-only
 Verify:
 
 ```bash
-npm run lint --if-present && npm run typecheck --if-present && npm run test --if-present && npm run build --if-present
+corepack pnpm run lint && corepack pnpm run typecheck && corepack pnpm -r --if-present test && corepack pnpm run build
 ```
 
 ## Federation Metadata
