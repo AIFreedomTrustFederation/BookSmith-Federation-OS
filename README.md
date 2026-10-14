@@ -94,6 +94,16 @@ Run the final clean-tree assertion from a clean committed checkout. While
 preparing a commit, use `git status --short` and confirm that only the intended
 files are changed.
 
+### Local web entry point
+
+The web application now serves a real `/` page from
+[`apps/web-os/app/page.tsx`](apps/web-os/app/page.tsx). Run `pnpm run dev`
+after installing dependencies to inspect the **Phase 0.1 informational shell**.
+It does not implement manuscript editing, storage sync, marketplace listings,
+publication, or royalty settlement. The hosted verification workflow builds
+the web application and smoke-tests that the root URL returns HTTP 200 with a
+visible heading, rather than accepting a 404-only Next.js build.
+
 ### Verification scope and publishing authority
 
 The root [`package.json`](package.json) pins **pnpm 10.0.0** and defines `lint`, `typecheck`, and `build` scripts, but **does not define a root `test` script**. The documented `pnpm -r --if-present test` step skips workspaces without tests; a successful exit is not evidence that automated tests ran. Inspect the output and test counts before reporting coverage. The web application at [`apps/web-os/package.json`](apps/web-os/package.json) uses Next.js, TypeScript, and ESLint; its `build` invokes `next build`, not a publication or marketplace release.
