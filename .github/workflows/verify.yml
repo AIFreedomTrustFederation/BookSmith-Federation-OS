@@ -55,22 +55,11 @@ jobs:
       - name: Build workspaces
         run: pnpm run build
 
+      - name: Regression-test homepage smoke gate
+        run: python3 -m unittest discover -s tests -v
+
       - name: Smoke-test web home page
-        run: |
-          set -euo pipefail
-          corepack pnpm --filter @booksmith-federation-os/web-os exec next start --port 3100 --hostname 127.0.0.1 > "$RUNNER_TEMP/booksmith-web.log" 2>&1 &
-          server_pid=$!
-          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
-          for attempt in $(seq 1 30); do
-            if curl -fsS --max-time 2 http://127.0.0.1:3100/ -o "$RUNNER_TEMP/booksmith-home.html" 2>/dev/null; then
-              grep -Eq '<h1[^>]*>BookSmith Federation OS</h1>' "$RUNNER_TEMP/booksmith-home.html"
-              exit 0
-            fi
-            if ! kill -0 "$server_pid" 2>/dev/null; then break; fi
-            sleep 1
-          done
-          cat "$RUNNER_TEMP/booksmith-web.log"
-          exit 1
+        run: node scripts/smoke-web-home.mjs
 
       - name: Verify clean checkout
         run: test -z "$(git status --porcelain)"

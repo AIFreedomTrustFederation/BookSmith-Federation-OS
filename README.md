@@ -104,6 +104,14 @@ publication, or royalty settlement. The hosted verification workflow builds
 the web application and smoke-tests that the root URL returns HTTP 200 with a
 visible heading, rather than accepting a 404-only Next.js build.
 
+The federation manifest also runs the same `node scripts/smoke-web-home.mjs`
+gate after its build, so federation verification rejects a 404-only homepage.
+The smoke script starts a loopback-only server on an ephemeral port and checks
+HTTP 200 plus the expected heading. Node.js 22, Corepack, installed workspace
+dependencies, and a completed Next.js build are prerequisites. Hosted CI also
+runs six dependency-free regression tests for the smoke gate. Neither check
+proves manuscript editing, external sync, publishing, or marketplace readiness.
+
 ### Verification scope and publishing authority
 
 The root [`package.json`](package.json) pins **pnpm 10.0.0** and defines `lint`, `typecheck`, and `build` scripts, but **does not define a root `test` script**. The documented `pnpm -r --if-present test` step skips workspaces without tests; a successful exit is not evidence that automated tests ran. Inspect the output and test counts before reporting coverage. The web application at [`apps/web-os/package.json`](apps/web-os/package.json) uses Next.js, TypeScript, and ESLint; its `build` invokes `next build`, not a publication or marketplace release.

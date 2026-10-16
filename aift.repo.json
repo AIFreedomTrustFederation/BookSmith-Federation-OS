@@ -12,7 +12,7 @@
   "commands": {
     "status": "git status --short",
     "pull": "git pull --ff-only",
-    "verify": "corepack pnpm run lint && corepack pnpm run typecheck && corepack pnpm -r --if-present test && corepack pnpm run build"
+    "verify": "corepack pnpm run lint && corepack pnpm run typecheck && corepack pnpm -r --if-present test && corepack pnpm run build && node scripts/smoke-web-home.mjs"
   },
   "standards": {
     "localFirst": true,
