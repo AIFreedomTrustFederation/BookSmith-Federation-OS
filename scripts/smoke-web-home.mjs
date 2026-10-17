@@ -56,7 +56,7 @@ try {
     }
     try {
       const response = await fetch(`http://127.0.0.1:${port}/`, { signal: AbortSignal.timeout(2000) });
-      if (response.ok) {
+      if (response.status === 200) {
         const body = await response.text();
         if (heading.test(body)) verified = true;
         else failure = 'HTTP 200 response is missing the expected homepage heading';
