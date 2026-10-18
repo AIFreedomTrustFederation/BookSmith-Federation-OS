@@ -112,6 +112,22 @@ dependencies, and a completed Next.js build are prerequisites. Hosted CI also
 runs six dependency-free regression tests for the smoke gate. Neither check
 proves manuscript editing, external sync, publishing, or marketplace readiness.
 
+### Federation status command
+
+The `.aift/capabilities.json` registry marks `.aift/commands/status.sh` as
+ready to report this repository's Git status. The command anchors its
+`git status --short` inspection to the checkout containing the script, even
+when invoked from a different working directory or a path containing spaces.
+It is read-only and does not validate remote synchronization. Run:
+
+```sh
+AIFT_REPO_NAME=BookSmith-Federation-OS sh .aift/commands/status.sh
+python3 -m unittest discover -s tests -p 'test_status_command.py' -v
+```
+
+Direct invocation through an external symlink launcher is not covered by
+these tests; use the command's actual repository path.
+
 ### Verification scope and publishing authority
 
 The root [`package.json`](package.json) pins **pnpm 10.0.0** and defines `lint`, `typecheck`, and `build` scripts, but **does not define a root `test` script**. The documented `pnpm -r --if-present test` step skips workspaces without tests; a successful exit is not evidence that automated tests ran. Inspect the output and test counts before reporting coverage. The web application at [`apps/web-os/package.json`](apps/web-os/package.json) uses Next.js, TypeScript, and ESLint; its `build` invokes `next build`, not a publication or marketplace release.
