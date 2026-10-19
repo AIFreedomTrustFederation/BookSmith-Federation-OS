@@ -107,9 +107,10 @@ visible heading, rather than accepting a 404-only Next.js build.
 The federation manifest also runs the same `node scripts/smoke-web-home.mjs`
 gate after its build, so federation verification rejects a 404-only homepage.
 The smoke script starts a loopback-only server on an ephemeral port and checks
-HTTP 200 plus the expected heading. Node.js 22, Corepack, installed workspace
+the root response itself for HTTP 200 plus the expected heading. It rejects
+redirects rather than following them to a different page or host. Node.js 22, Corepack, installed workspace
 dependencies, and a completed Next.js build are prerequisites. Hosted CI also
-runs six dependency-free regression tests for the smoke gate. Neither check
+runs eight dependency-free regression tests for the smoke gate. Neither check
 proves manuscript editing, external sync, publishing, or marketplace readiness.
 
 ### Verification scope and publishing authority
