@@ -44,3 +44,7 @@ reports/
 var/events/
 yarn-debug.log*
 yarn-error.log*
+
+# python
+__pycache__/
+*.pyc
