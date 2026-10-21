@@ -21,8 +21,11 @@ class HomepageSmokeTest(unittest.TestCase):
                 const port = Number(args[args.indexOf('--port') + 1]);
                 const mode = process.env.BOOKSMITH_TEST_MODE;
                 if (mode === 'exit') process.exit(4);
+                let requests = 0;
                 const server = http.createServer((_req, res) => {
-                  res.statusCode = mode === '404' ? 404 : mode === '201' ? 201 : 200;
+                  requests += 1;
+                  const warming = (mode === 'warming' || mode === 'warming404') && requests === 1;
+                  res.statusCode = warming ? 503 : mode === '404' || mode === 'warming404' ? 404 : mode === '201' ? 201 : 200;
                   res.end(mode === 'wrong' ? '<h1>Other Site</h1>' : '<h1>BookSmith Federation OS</h1>');
                 });
                 server.listen(port, '127.0.0.1');
@@ -35,6 +38,16 @@ class HomepageSmokeTest(unittest.TestCase):
         result = self.run_fixture('ok')
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn('passed', result.stdout)
+
+    def test_transient_503_then_200_passes(self):
+        result = self.run_fixture('warming')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('passed', result.stdout)
+
+    def test_transient_503_then_404_fails(self):
+        result = self.run_fixture('warming404')
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('HTTP 404', result.stderr)
 
     def test_http_404_fails(self):
         result = self.run_fixture('404')

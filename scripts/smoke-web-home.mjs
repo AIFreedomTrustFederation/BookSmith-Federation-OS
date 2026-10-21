@@ -63,6 +63,12 @@ try {
         break;
       }
       failure = `homepage returned HTTP ${response.status}`;
+      // Next.js may briefly return a gateway/service error while starting.
+      // Retry only transient startup responses; preserve hard failures (e.g. 404).
+      if ([502, 503, 504].includes(response.status)) {
+        await sleep(250);
+        continue;
+      }
       break;
     } catch {
       await sleep(250);
