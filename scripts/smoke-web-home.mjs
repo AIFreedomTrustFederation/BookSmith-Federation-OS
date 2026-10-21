@@ -63,6 +63,13 @@ try {
         break;
       }
       failure = `homepage returned HTTP ${response.status}`;
+      // A server can briefly report 5xx while its routes become ready.
+      // Keep the existing fail-fast behavior for unexpected non-5xx responses.
+      if (response.status >= 500 && response.status <= 599) {
+        await response.body?.cancel();
+        await sleep(250);
+        continue;
+      }
       break;
     } catch {
       await sleep(250);

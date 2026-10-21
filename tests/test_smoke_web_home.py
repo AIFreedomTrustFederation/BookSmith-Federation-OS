@@ -21,8 +21,10 @@ class HomepageSmokeTest(unittest.TestCase):
                 const port = Number(args[args.indexOf('--port') + 1]);
                 const mode = process.env.BOOKSMITH_TEST_MODE;
                 if (mode === 'exit') process.exit(4);
+                let requests = 0;
                 const server = http.createServer((_req, res) => {
-                  res.statusCode = mode === '404' ? 404 : mode === '201' ? 201 : 200;
+                  requests += 1;
+                  res.statusCode = mode === '503-once' && requests === 1 ? 503 : mode === '404' ? 404 : mode === '201' ? 201 : 200;
                   res.end(mode === 'wrong' ? '<h1>Other Site</h1>' : '<h1>BookSmith Federation OS</h1>');
                 });
                 server.listen(port, '127.0.0.1');
@@ -33,6 +35,11 @@ class HomepageSmokeTest(unittest.TestCase):
 
     def test_expected_homepage_passes(self):
         result = self.run_fixture('ok')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('passed', result.stdout)
+
+    def test_transient_503_recovers(self):
+        result = self.run_fixture('503-once')
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn('passed', result.stdout)
 
