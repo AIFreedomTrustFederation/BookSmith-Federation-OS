@@ -55,7 +55,10 @@ try {
       break;
     }
     try {
-      const response = await fetch(`http://127.0.0.1:${port}/`, { signal: AbortSignal.timeout(2000) });
+      const response = await fetch(`http://127.0.0.1:${port}/`, {
+        signal: AbortSignal.timeout(2000),
+        redirect: 'manual', // A redirect is not HTTP 200 from the root URL.
+      });
       if (response.status === 200) {
         const body = await response.text();
         if (heading.test(body)) verified = true;

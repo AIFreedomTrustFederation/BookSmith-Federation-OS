@@ -22,8 +22,13 @@ class HomepageSmokeTest(unittest.TestCase):
                 const mode = process.env.BOOKSMITH_TEST_MODE;
                 if (mode === 'exit') process.exit(4);
                 let requests = 0;
-                const server = http.createServer((_req, res) => {
+                const server = http.createServer((req, res) => {
                   requests += 1;
+                  if (mode === 'redirect' && req.url === '/') {
+                    res.writeHead(302, { Location: '/ready' });
+                    res.end();
+                    return;
+                  }
                   const warming = (mode === 'warming' || mode === 'warming404') && requests === 1;
                   res.statusCode = warming ? 503 : mode === '404' || mode === 'warming404' ? 404 : mode === '201' ? 201 : 200;
                   res.end(mode === 'wrong' ? '<h1>Other Site</h1>' : '<h1>BookSmith Federation OS</h1>');
@@ -48,6 +53,11 @@ class HomepageSmokeTest(unittest.TestCase):
         result = self.run_fixture('warming404')
         self.assertNotEqual(result.returncode, 0)
         self.assertIn('HTTP 404', result.stderr)
+
+    def test_redirect_is_not_root_http_200(self):
+        result = self.run_fixture('redirect')
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('HTTP 302', result.stderr)
 
     def test_http_404_fails(self):
         result = self.run_fixture('404')

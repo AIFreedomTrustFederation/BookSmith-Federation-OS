@@ -108,10 +108,10 @@ The federation manifest also runs the same `node scripts/smoke-web-home.mjs`
 gate after its build, so federation verification rejects a 404-only homepage.
 The smoke script starts a loopback-only server on an ephemeral port and checks
 HTTP 200 plus the expected heading. It retries transient HTTP 502/503/504 startup
-responses until its 30-second deadline; unexpected statuses (including 404),
+responses until its 30-second deadline; unexpected statuses (including 3xx redirects and 404),
 wrong headings, early process exits, and persistent startup failures remain errors. Node.js 22, Corepack, installed workspace
 dependencies, and a completed Next.js build are prerequisites. Hosted CI also
-runs six dependency-free regression tests for the smoke gate. Neither check
+runs ten dependency-free regression tests for the smoke gate. Neither check
 proves manuscript editing, external sync, publishing, or marketplace readiness.
 
 ### Verification scope and publishing authority
