@@ -25,6 +25,11 @@ class HomepageSmokeTest(unittest.TestCase):
                 const server = http.createServer((_req, res) => {
                   requests += 1;
                   const warming = (mode === 'warming' || mode === 'warming404') && requests === 1;
+                  if (mode === 'redirect' && _req.url === '/') {
+                    res.writeHead(302, { Location: '/fallback' });
+                    res.end();
+                    return;
+                  }
                   res.statusCode = warming ? 503 : mode === '404' || mode === 'warming404' ? 404 : mode === '201' ? 201 : 200;
                   res.end(mode === 'wrong' ? '<h1>Other Site</h1>' : '<h1>BookSmith Federation OS</h1>');
                 });
@@ -58,6 +63,11 @@ class HomepageSmokeTest(unittest.TestCase):
         result = self.run_fixture('201')
         self.assertNotEqual(result.returncode, 0)
         self.assertIn('HTTP 201', result.stderr)
+
+    def test_redirect_to_other_page_with_heading_fails(self):
+        result = self.run_fixture('redirect')
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn('HTTP 302', result.stderr)
 
     def test_wrong_homepage_fails(self):
         result = self.run_fixture('wrong')
