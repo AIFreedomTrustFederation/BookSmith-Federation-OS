@@ -75,17 +75,20 @@ Receive → Inspect → Name → Propose → Consent → Act → Verify → Reco
 
 **Receive** accepts a manuscript, upload, repository, source, book, author identity, storage connection, or publishing request. **Inspect** determines its owner, location, rights, current state, format, dependencies, and target workflow. **Name** assigns the object to the correct book, library, workspace, role, permission set, or application. **Propose** allows AI and system automation to suggest structure, sync, publishing actions, or marketplace preparation. **Consent** gates manuscript changes, account connections, external sync, release, pricing, rights, public visibility, and money movement. **Act** performs the approved operation through the correct provider. **Verify** checks files, builds, rendered proofs, sync results, permissions, and external publication state. **Record** preserves provenance, release metadata, audit history, and durable references. **Return** brings the result back into the workspace with a clear state and next owner.
 
-The repository-level verification contract matches hosted CI and uses the
-package manager version declared in `package.json`:
+To reproduce the hosted CI verification gate, use Node.js 22, Python 3,
+and the package manager version declared in `package.json`:
 
 ```bash
 corepack enable
 corepack prepare pnpm@10.0.0 --activate
+test "$(pnpm config get ignore-scripts)" = "true"
 pnpm install --frozen-lockfile --ignore-scripts
 pnpm run lint
 pnpm run typecheck
 pnpm -r --if-present test
 pnpm run build
+python3 -m unittest discover -s tests -v
+node scripts/smoke-web-home.mjs
 git diff --check
 test -z "$(git status --porcelain)"
 ```
@@ -112,7 +115,7 @@ redirects instead of following them to a different page that could mask a broken
 responses until its 30-second deadline; unexpected statuses (including 404),
 wrong headings, early process exits, and persistent startup failures remain errors. Node.js 22, Corepack, installed workspace
 dependencies, and a completed Next.js build are prerequisites. Hosted CI also
-runs six dependency-free regression tests for the smoke gate. Neither check
+runs ten dependency-free regression tests for the smoke gate. Neither check
 proves manuscript editing, external sync, publishing, or marketplace readiness.
 
 ### Verification scope and publishing authority
