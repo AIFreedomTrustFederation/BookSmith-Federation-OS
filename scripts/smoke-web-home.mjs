@@ -10,9 +10,9 @@ const timeoutMs = 30_000;
 // browser-based CSS visibility or accessibility audit.
 function hasHomepageHeading(html) {
   const documentHtml = html
-    .replace(/<!--[\\s\\S]*?-->/g, '')
-    .replace(/<(script|style|template)\\b[^>]*>[\\s\\S]*?<\\/\\1\\s*>/gi, '');
-  return /<h1\\b[^>]*>\\s*BookSmith Federation OS\\s*<\\/h1\\s*>/i.test(documentHtml);
+    .replace(/<!--[\s\S]*?-->/g, '')
+    .replace(/<(script|style|template)\b[^>]*>[\s\S]*?<\/\1\s*>/gi, '');
+  return /<h1\b[^>]*>\s*BookSmith Federation OS\s*<\/h1\s*>/i.test(documentHtml);
 }
 
 async function unusedPort() {
