@@ -31,7 +31,13 @@ class HomepageSmokeTest(unittest.TestCase):
                     return;
                   }
                   res.statusCode = warming ? 503 : mode === '404' || mode === 'warming404' ? 404 : mode === '201' ? 201 : 200;
-                  res.end(mode === 'wrong' ? '<h1>Other Site</h1>' : '<h1>BookSmith Federation OS</h1>');
+                  const inertHeading = {
+                    script: '<script type="text/plain"><h1>BookSmith Federation OS</h1></script>',
+                    comment: '<!-- <h1>BookSmith Federation OS</h1> -->',
+                    template: '<template><h1>BookSmith Federation OS</h1></template>',
+                    style: '<style><h1>BookSmith Federation OS</h1></style>',
+                  }[mode];
+                  res.end(mode === 'wrong' ? '<h1>Other Site</h1>' : inertHeading ? '<h2>Maintenance</h2>' + inertHeading : '<h1>BookSmith Federation OS</h1>');
                 });
                 server.listen(port, '127.0.0.1');
             '''))
@@ -68,6 +74,26 @@ class HomepageSmokeTest(unittest.TestCase):
         result = self.run_fixture('redirect')
         self.assertNotEqual(result.returncode, 0, result.stdout)
         self.assertIn('HTTP 302', result.stderr)
+
+    def test_script_embedded_heading_fails(self):
+        result = self.run_fixture('script')
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn('missing the expected homepage heading', result.stderr)
+
+    def test_commented_heading_fails(self):
+        result = self.run_fixture('comment')
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn('missing the expected homepage heading', result.stderr)
+
+    def test_template_embedded_heading_fails(self):
+        result = self.run_fixture('template')
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn('missing the expected homepage heading', result.stderr)
+
+    def test_style_embedded_heading_fails(self):
+        result = self.run_fixture('style')
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn('missing the expected homepage heading', result.stderr)
 
     def test_wrong_homepage_fails(self):
         result = self.run_fixture('wrong')
