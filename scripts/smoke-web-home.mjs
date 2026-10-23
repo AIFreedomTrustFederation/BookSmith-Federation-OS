@@ -5,7 +5,15 @@ import { createServer } from 'node:net';
 import { setTimeout as sleep } from 'node:timers/promises';
 
 const timeoutMs = 30_000;
-const heading = /<h1[^>]*>BookSmith Federation OS<\/h1>/;
+// Ignore inert HTML contexts: a serialized or commented heading is not a
+// heading in the served document. This remains a static smoke check, not a
+// browser-based CSS visibility or accessibility audit.
+function hasHomepageHeading(html) {
+  const documentHtml = html
+    .replace(/<!--[\\s\\S]*?-->/g, '')
+    .replace(/<(script|style|template)\\b[^>]*>[\\s\\S]*?<\\/\\1\\s*>/gi, '');
+  return /<h1\\b[^>]*>\\s*BookSmith Federation OS\\s*<\\/h1\\s*>/i.test(documentHtml);
+}
 
 async function unusedPort() {
   const server = createServer();
@@ -58,7 +66,7 @@ try {
       const response = await fetch(`http://127.0.0.1:${port}/`, { signal: AbortSignal.timeout(2000), redirect: 'manual' });
       if (response.status === 200) {
         const body = await response.text();
-        if (heading.test(body)) verified = true;
+        if (hasHomepageHeading(body)) verified = true;
         else failure = 'HTTP 200 response is missing the expected homepage heading';
         break;
       }
