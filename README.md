@@ -105,18 +105,24 @@ after installing dependencies to inspect the **Phase 0.1 informational shell**.
 It does not implement manuscript editing, storage sync, marketplace listings,
 publication, or royalty settlement. The hosted verification workflow builds
 the web application and smoke-tests that the root URL returns HTTP 200 with a
-heading in the served document markup, rather than accepting a 404-only Next.js build.
+a heading in the served document markup, rather than accepting a
+404-only Next.js build.
 
 The federation manifest also runs the same `node scripts/smoke-web-home.mjs`
 gate after its build, so federation verification rejects a 404-only homepage.
 The smoke script starts a loopback-only server on an ephemeral port and checks
-HTTP 200 plus the expected heading on the requested root URL. It ignores heading-shaped text inside HTML comments, scripts, styles, and templates to avoid false positives from inert markup. This is a static response check, not a browser-based CSS visibility or accessibility audit. It rejects HTTP
-redirects instead of following them to a different page that could mask a broken homepage. It retries transient HTTP 502/503/504 startup
-responses until its 30-second deadline; unexpected statuses (including 404),
-wrong headings, early process exits, and persistent startup failures remain errors. Node.js 22, Corepack, installed workspace
-dependencies, and a completed Next.js build are prerequisites. Hosted CI also
-runs fourteen dependency-free regression tests for the smoke gate. Neither check
-proves manuscript editing, external sync, publishing, or marketplace readiness.
+HTTP 200 plus the expected heading on the requested root URL. It ignores
+heading-shaped text inside HTML comments, scripts, styles, and templates to
+avoid false positives from inert markup. This is a static response check, not
+a browser-based CSS visibility or accessibility audit. It rejects HTTP
+redirects instead of following them to a different page that could mask a
+broken homepage. It retries transient HTTP 502/503/504 startup responses
+until its 30-second deadline; unexpected statuses (including 404), wrong
+headings, early process exits, and persistent startup failures remain errors.
+Node.js 22, Corepack, installed workspace dependencies, and a completed
+Next.js build are prerequisites. Hosted CI also runs fourteen dependency-free
+regression tests for the smoke gate. Neither check proves manuscript editing,
+external sync, publishing, or marketplace readiness.
 
 ### Verification scope and publishing authority
 
