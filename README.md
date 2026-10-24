@@ -124,6 +124,12 @@ Next.js build are prerequisites. Hosted CI also runs fourteen dependency-free
 regression tests for the smoke gate. Neither check proves manuscript editing,
 external sync, publishing, or marketplace readiness.
 
+### GitHub Pages deployment boundary
+
+The [Deploy GitHub Pages workflow](.github/workflows/deploy-pages.yml) is **manual** (`workflow_dispatch`), not part of the [Workspace Verification workflow](.github/workflows/verify.yml). It copies `docs/` into a Pages artifact and deploys that artifact; it does **not** build or publish the Next.js application in `apps/web-os/`. The deployed documentation entry point, [`docs/index.html`](docs/index.html), redirects to [`docs/federation-os-architecture.html`](docs/federation-os-architecture.html), rather than serving the Phase 0.1 web application.
+
+A successful workspace build, homepage smoke test, or Pages deployment therefore proves only its respective build, local HTTP response, or documentation deployment step. None establishes that the interactive OS shell, publishing pipeline, marketplace, or production web application is deployed. Check the specific GitHub Actions run and the destination URL before claiming public availability; this repository does not perform a live post-deployment HTTP check in its Pages workflow.
+
 ### Verification scope and publishing authority
 
 The root [`package.json`](package.json) pins **pnpm 10.0.0** and defines `lint`, `typecheck`, and `build` scripts, but **does not define a root `test` script**. The documented `pnpm -r --if-present test` step skips workspaces without tests; a successful exit is not evidence that automated tests ran. Inspect the output and test counts before reporting coverage. The web application at [`apps/web-os/package.json`](apps/web-os/package.json) uses Next.js, TypeScript, and ESLint; its `build` invokes `next build`, not a publication or marketplace release.
