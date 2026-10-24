@@ -124,6 +124,32 @@ Next.js build are prerequisites. Hosted CI also runs fourteen dependency-free
 regression tests for the smoke gate. Neither check proves manuscript editing,
 external sync, publishing, or marketplace readiness.
 
+### Implemented modules versus planned federation integrations
+
+The Phase 0.1 homepage is an informational shell, not a connected publishing
+service. [Canon intake](packages/federation-core/src/canon-intake.ts) currently
+provides TypeScript record types, constructors, and immutable array-append
+helpers; it does not persist records, authenticate users, enforce approval, or
+apply proposed patches. [Storage core](packages/storage-core/src/index.ts)
+declares local filesystem, GitHub, Google Drive, and federation-node adapters,
+but marks **all four** `planned`, including local storage.
+[Marketplace core](packages/marketplace-core/src/index.ts) explicitly declares
+`implemented: false`. The [marketplace app](apps/marketplace/README.md),
+[node agent](apps/node-agent/README.md), and
+[BookSmith bridge](packages/booksmith-bridge/README.md) are reserved boundaries,
+not operational integrations.
+
+Federation discovery metadata is likewise distinct from working services:
+[services.json](.aift/services.json) declares the repository service
+`planned`, while [capabilities.json](.aift/capabilities.json) records
+`verify` as `planned` and `test`/`build` as `detected`, even though the
+separate pnpm and hosted CI verification commands documented above are
+executable. The sibling-repository mapping in
+[federation.config.json](federation.config.json) expresses intended ownership
+and integration relationships, not proof of live APIs, storage sync, identity
+enforcement, publication, or settlement. Verify those functions independently
+before describing them as available.
+
 ### GitHub Pages deployment boundary
 
 The [Deploy GitHub Pages workflow](.github/workflows/deploy-pages.yml) is **manual** (`workflow_dispatch`), not part of the [Workspace Verification workflow](.github/workflows/verify.yml). It copies `docs/` into a Pages artifact and deploys that artifact; it does **not** build or publish the Next.js application in `apps/web-os/`. The deployed documentation entry point, [`docs/index.html`](docs/index.html), redirects to [`docs/federation-os-architecture.html`](docs/federation-os-architecture.html), rather than serving the Phase 0.1 web application.
