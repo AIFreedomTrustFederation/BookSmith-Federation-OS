@@ -19,11 +19,14 @@ Use the pinned package manager and reproduce the canonical workspace gate:
 ```bash
 corepack enable
 corepack prepare pnpm@10.0.0 --activate
+test "$(pnpm config get ignore-scripts)" = "true"
 pnpm install --frozen-lockfile --ignore-scripts
 pnpm run lint
 pnpm run typecheck
 pnpm -r --if-present test
 pnpm run build
+python3 -m unittest discover -s tests -v
+node scripts/smoke-web-home.mjs
 git diff --check
 test -z "$(git status --porcelain)"
 ```
