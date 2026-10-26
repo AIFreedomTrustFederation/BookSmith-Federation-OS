@@ -150,6 +150,8 @@ and integration relationships, not proof of live APIs, storage sync, identity
 enforcement, publication, or settlement. Verify those functions independently
 before describing them as available.
 
+**Federation configuration schema boundary:** [`federation.config.json`](federation.config.json) references `./schemas/federation-config.schema.json` in its `$schema` field, but that local schema file is absent from the tracked repository tree. The [Workspace Verification workflow](.github/workflows/verify.yml) does not explicitly validate the configuration against a JSON Schema. Passing CI therefore does not establish schema-validated repository relationships or executable cross-repository integrations; those require a tracked schema, a verification gate, and independent integration evidence.
+
 ### GitHub Pages deployment boundary
 
 The [Deploy GitHub Pages workflow](.github/workflows/deploy-pages.yml) is **manual** (`workflow_dispatch`), not part of the [Workspace Verification workflow](.github/workflows/verify.yml). It copies `docs/` into a Pages artifact and deploys that artifact; it does **not** build or publish the Next.js application in `apps/web-os/`. The deployed documentation entry point, [`docs/index.html`](docs/index.html), redirects to [`docs/federation-os-architecture.html`](docs/federation-os-architecture.html), rather than serving the Phase 0.1 web application.
