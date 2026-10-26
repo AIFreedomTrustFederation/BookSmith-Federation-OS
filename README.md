@@ -158,6 +158,10 @@ The [Deploy GitHub Pages workflow](.github/workflows/deploy-pages.yml) is **manu
 
 A successful workspace build, homepage smoke test, or Pages deployment therefore proves only its respective build, local HTTP response, or documentation deployment step. None establishes that the interactive OS shell, publishing pipeline, marketplace, or production web application is deployed. Check the specific GitHub Actions run and the destination URL before claiming public availability; this repository does not perform a live post-deployment HTTP check in its Pages workflow.
 
+### Manual source, proof, and publication boundary
+
+The [manual contract](.aift/manual.json) marks `manualSource` as `ready`, but lists `pdfBuild` and `webPublish` as `planned`. Its section inventory names `man0` through `man9`, while the tracked [manual source](docs/manual/source/index.md) currently contains substantive files only under `man0` and `man7`. The `booksmith-ai` `manual.build.pdf` builder capability is also marked `planned`. These declarations do not establish a complete ten-section manual, a compiled PDF, a reviewed proof, an author-approved edition, or a publication receipt. The [Pages workflow](.github/workflows/deploy-pages.yml) copies `docs/` without building or approving a manual. Before asserting a published edition, verify the exact source revision, built artifact checksum, proof review, explicit rights-holder approval, and confirmed destination.
+
 ### Verification scope and publishing authority
 
 The root [`package.json`](package.json) pins **pnpm 10.0.0** and defines `lint`, `typecheck`, and `build` scripts, but **does not define a root `test` script**. The documented `pnpm -r --if-present test` step skips workspaces without tests; a successful exit is not evidence that automated tests ran. Inspect the output and test counts before reporting coverage. The web application at [`apps/web-os/package.json`](apps/web-os/package.json) uses Next.js, TypeScript, and ESLint; its `build` invokes `next build`, not a publication or marketplace release.
