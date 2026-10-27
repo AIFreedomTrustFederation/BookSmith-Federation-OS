@@ -150,6 +150,8 @@ and integration relationships, not proof of live APIs, storage sync, identity
 enforcement, publication, or settlement. Verify those functions independently
 before describing them as available.
 
+**Federation status and sync execution-context boundary:** [`.aift/commands/status.sh`](.aift/commands/status.sh) prints `AIFT_REPO_NAME` but runs `git status --short` in the invoking working directory without checking repository identity. The [`aift.repo.json`](aift.repo.json) `status` and `pull` commands likewise run `git status --short` and `git pull --ff-only` without selecting this checkout. The [`sync` capability](.aift/capabilities.json) is labeled `ready` based on Git remote/status detection, not verified storage or federation synchronization. Confirm the intended checkout and its remote before interpreting these commands; their success does not establish external sync, editorial approval, or publication.
+
 **Federation configuration schema boundary:** [`federation.config.json`](federation.config.json) references `./schemas/federation-config.schema.json` in its `$schema` field, but that local schema file is absent from the tracked repository tree. The [Workspace Verification workflow](.github/workflows/verify.yml) does not explicitly validate the configuration against a JSON Schema. Passing CI therefore does not establish schema-validated repository relationships or executable cross-repository integrations; those require a tracked schema, a verification gate, and independent integration evidence.
 
 ### GitHub Pages deployment boundary
