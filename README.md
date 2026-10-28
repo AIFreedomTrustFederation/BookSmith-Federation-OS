@@ -139,6 +139,8 @@ but marks **all four** `planned`, including local storage.
 [BookSmith bridge](packages/booksmith-bridge/README.md) are reserved boundaries,
 not operational integrations.
 
+**Canon intake source-evidence boundary:** [`createCanonIntakeRecord`](packages/federation-core/src/canon-intake.ts) assigns `accepted-canon` to a supplied record without authenticating `createdBy`, reading the claimed source, or computing or checking the optional `checksum`. [`createProposedPatchRecord`](packages/federation-core/src/canon-intake.ts) creates a `proposed` record without proof of human approval. These in-memory record labels are not attestations of source authenticity, editorial consent, patch application, PDF proofing, or publication; those require separate evidence at the relevant workflow boundary.
+
 Federation discovery metadata is likewise distinct from working services:
 [services.json](.aift/services.json) declares the repository service
 `planned`, while [capabilities.json](.aift/capabilities.json) records
