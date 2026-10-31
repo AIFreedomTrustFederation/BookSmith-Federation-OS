@@ -1,4 +1,4 @@
-# BookSmith Federation OS UNIX Manual Manual
+# BookSmith Federation OS UNIX Manual
 
 This directory contains the UNIX-style manual source for this repository.
 
