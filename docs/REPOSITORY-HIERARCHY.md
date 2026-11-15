@@ -21,6 +21,8 @@ AI Freedom Trust Federation
 
 The desktop operating environment. It provides the workspace, window manager, app launcher, dock, settings, local-first storage, search, and user-facing orchestration of the federation apps.
 
+**Implementation status (Phase 0.1):** The capabilities above describe the intended architecture, not currently verified desktop features. The tracked [web entry point](../apps/web-os/app/page.tsx) renders an informational homepage; it does not provide a window manager, app launcher, dock, persisted settings or storage, or connected federation apps. The [root README](../README.md) documents a local homepage HTTP smoke check, not evidence of these features or a production deployment.
+
 ### booksmith-ai
 
 The publishing engine. It remains focused on manuscripts, books, sources, citations, proofing, builds, release packets, and publishing workflows.
