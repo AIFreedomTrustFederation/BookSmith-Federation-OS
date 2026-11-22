@@ -189,3 +189,10 @@ That is why the economic protocol remains modular, the book engine remains disti
 ### The Return of the Word
 
 In BookSmith Federation OS, the Word returns as a library that can remember where its books came from. Source enters the workspace, becomes organized knowledge, passes through human-governed intelligence and production, becomes a release, and returns as an owned, portable, attributable work. The operating system serves the book by preserving the relationships around it rather than surrounding it with a platform that cannot be escaped.
+
+
+---
+
+## Proposed AIFT Universal OS Integration
+
+The [repository-specific integration guide](docs/aift-universal-os-alignment.md) describes how this project might relate to native, hosted and future embodied AIFT systems: author-owned publishing workspace concepts; not a duplicate Booksmith implementation. It is a **proposal**, anchored to the [central OS architecture and infographics under review](https://github.com/AIFreedomTrustFederation/AIFT-OS/pull/92), not a current hardware or production capability.
